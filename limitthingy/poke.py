@@ -28,6 +28,28 @@ DEFAULT_TIMEOUT = 90
 # Env vars that would make the child session bill an API key or refuse to nest.
 STRIP_ENV = ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "CLAUDECODE", "CLAUDE_CODE_ENTRYPOINT")
 
+# Settings applied to the child session only (via --settings). Interactive sessions
+# auto-connect to Remote Control by default, which lists every poke in the
+# claude.ai/code session history. Disabling it here keeps the throwaway session
+# local; the status line (and so rate_limits) still runs. autoUploadSessions is
+# the separate view-only mirror, and disableClaudeAiConnectors skips fetching
+# the account's claude.ai MCP connectors (Gmail etc.) at startup.
+CHILD_SETTINGS = {
+    "disableRemoteControl": True,
+    "autoUploadSessions": False,
+    "disableClaudeAiConnectors": True,
+}
+
+# Flags that shrink the request. The built-in system prompt plus tool definitions
+# is ~25k tokens per poke, which counts against the very limits being measured.
+CHILD_FLAGS = [
+    "--system-prompt", "Reply with one word.",
+    "--tools", "",
+    "--disable-slash-commands",
+    "--strict-mcp-config",
+    "--effort", "low",
+]
+
 
 def fmt_pct(v):
     """Format a percentage without float noise: 49 -> '49%', 23.4999999 -> '23.5%'."""
@@ -75,7 +97,8 @@ def poke(prompt=DEFAULT_PROMPT, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, vi
     log = log or (lambda _m: None)
     sid = str(uuid.uuid4())
     env = {k: v for k, v in os.environ.items() if k not in STRIP_ENV}
-    cmd = [find_claude(), "--model", model, "--session-id", sid, prompt]
+    cmd = [find_claude(), "--settings", json.dumps(CHILD_SETTINGS), *CHILD_FLAGS,
+           "--model", model, "--session-id", sid, prompt]
 
     flags = 0
     if sys.platform == "win32":

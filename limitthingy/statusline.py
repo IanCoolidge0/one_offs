@@ -7,7 +7,7 @@ Claude Code pipes session JSON to stdin. This script:
   2. prints a one-line status for Claude Code's own footer.
 
 Configured in ~/.claude/settings.json as:
-  "statusLine": {"type": "command", "command": "python C:/Users/cooli/limitthingy/statusline.py"}
+  "statusLine": {"type": "command", "command": "python C:/Users/cooli/one_offs/limitthingy/statusline.py"}
 """
 import json
 import os

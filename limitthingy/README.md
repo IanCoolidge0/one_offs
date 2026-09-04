@@ -23,7 +23,7 @@ every Claude Code session is idle; the footer shows how old the data is.
 ```json
 "statusLine": {
   "type": "command",
-  "command": "python C:/Users/cooli/limitthingy/statusline.py"
+  "command": "python C:/Users/cooli/one_offs/limitthingy/statusline.py"
 }
 ```
 
@@ -57,8 +57,11 @@ about five seconds and uses Haiku to keep the cost negligible. The top-right
 button does this on click, and the widget does it automatically when the data
 is older than `auto_poke_after_seconds`. Attempts are logged to `poke.log`.
 
-A poke leaves no transcript or history entry. It does rotate one ~100 KB backup
-of `~/.claude.json` (Claude Code keeps the last five).
+A poke leaves no local transcript. It is started with
+`--settings '{"disableRemoteControl": true}'` so it does not auto-connect to
+Remote Control; without that, every poke shows up as a one-line "cat" session in
+the claude.ai/code history. It does rotate one ~100 KB backup of `~/.claude.json`
+(Claude Code keeps the last five).
 
 `ANTHROPIC_API_KEY` is stripped from the spawned session so it uses your
 claude.ai login rather than an API key.
