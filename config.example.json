@@ -1,0 +1,17 @@
+{
+  "heartbeat_seconds": 2,
+  "stale_after_seconds": 600,
+  "opacity": 0.92,
+  "always_on_top": true,
+  "x": 40,
+  "y": 40,
+  "width": 300,
+  "font_family": "Segoe UI",
+  "font_size": 10,
+  "state_file": null,
+  "poke_on_refresh": true,
+  "poke_prompt": "reply with the word cat, nothing else",
+  "poke_model": "haiku",
+  "poke_timeout_seconds": 90,
+  "auto_poke_after_seconds": 1800
+}
