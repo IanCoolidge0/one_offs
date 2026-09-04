@@ -1,0 +1,7 @@
+# machine-local runtime files
+state.json
+last_input.json
+poke.log
+config.json
+__pycache__/
+*.pyc
